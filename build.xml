@@ -1,0 +1,29 @@
+<project name="AntTrial" default="all">
+	<property name="test-dir" location="test"/>
+	<property name="TALK" value="true"/>
+	<path id="classpath.base"/>
+	<path id="classpath.test">
+		<pathelement location="lib/junit-4.10.jar"/>
+		<pathelement location="${test-dir}"/>
+		<path refid = "classpath.base"/>
+	</path>
+	<target name = "compile-test">
+		<javac srcdir="${test-dir}" verbose="${TALK}" classpathref="classpath.test"/>
+	</target>
+	<target name="clean-compile-test">
+		<delete verbose ="${TALK}">
+			<fileset dir="${test-dir}" includes="**/*.class"/>
+		</delete>
+	</target>
+	<target name="test" depends="compile-test">
+		<junit failureProperty="test.failure">
+			<classpath refid="classpath.test"/>
+			<formatter type="brief" usefile="false"/>
+			<test name="HelloWorldTest"/>
+		</junit>
+		<fail message="test failed" if="test.failure" />
+	</target>
+	<target name="all" depends="test"/>
+	<target name="clean" depends="clean-compile-test"/>
+</project>
+
